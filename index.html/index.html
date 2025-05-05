@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Web App</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Python in the Browser</h1>
+    
+    <textarea id="python-code" placeholder="Write your Python code here...">print("Hello from Python!")</textarea>
+    <button onclick="runPython()">Run Python</button>
+
+    <pre id="output"></pre>
+
+    <hr />
+
+    <label for="bg-upload">Change Background:</label>
+    <input type="file" id="bg-upload" accept="image/*" />
+  </div>
+
+  <script>
+    let pyodideReadyPromise = loadPyodide();
+
+    async function runPython() {
+      const code = document.getElementById("python-code").value;
+      const output = document.getElementById("output");
+      try {
+        let pyodide = await pyodideReadyPromise;
+        let result = await pyodide.runPythonAsync(code);
+        output.textContent = result;
+      } catch (err) {
+        output.textContent = "Error: " + err;
+      }
+    }
+
+    document.getElementById("bg-upload").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          document.body.style.backgroundImage = `url(${event.target.result})`;
+          document.body.style.backgroundSize = "cover";
+          document.body.style.backgroundRepeat = "no-repeat";
+          document.body.style.backgroundPosition = "center";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
