@@ -6,21 +6,60 @@
   <title>PLEBLE</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: white;
+      padding: 20px;
+      background-color: black;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 200px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    pre {
+      background: #111;
+      padding: 10px;
+      border-radius: 5px;
+      min-height: 100px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>PLEBLE</h1>
+    <h1>PLEBLE Cadet Word Guessing Game</h1>
+    
+    <p><strong>Instructions:</strong></p>
+    <ul>
+      <li>Guess a 5-letter West Point–related word/code.</li>
+      <li>You have 6 tries to get it right.</li>
+      <li><code>[X]</code> = correct letter in the correct spot</li>
+      <li><code>(X)</code> = correct letter, wrong spot</li>
+      <li><code>X</code> = letter is not in the word</li>
+    </ul>
 
-    <div class="game">
-      <label for="guess-input">Enter your guess:</label><br />
-      <input type="text" id="guess-input" maxlength="5" />
-      <button onclick="handleGuess()">Submit</button>
-    </div>
+    <label for="guess-input">Enter your guess:</label><br />
+    <input type="text" id="guess-input" maxlength="5" />
+    <button onclick="handleGuess()">Submit</button>
 
-    <pre id="output"></pre>
+    <pre id="output">Welcome to PLEBLE! Start guessing below.</pre>
 
     <hr />
-
     <label for="bg-upload">Change Background:</label>
     <input type="file" id="bg-upload" accept="image/*" />
   </div>
@@ -83,7 +122,7 @@ def evaluate(guess):
 
       try {
         const result = await pyodide.runPythonAsync(`evaluate("${guess}")`);
-        output.textContent += `\n${result}`;
+        output.textContent += `\n${guess.toUpperCase()} → ${result}`;
       } catch (err) {
         output.textContent += `\nError: ${err}`;
       }
@@ -93,7 +132,7 @@ def evaluate(guess):
 
     window.addEventListener("load", setupGame);
 
-    // Handle background image upload
+    // Background image upload
     document.getElementById("bg-upload").addEventListener("change", function (e) {
       const file = e.target.files[0];
       if (file) {
