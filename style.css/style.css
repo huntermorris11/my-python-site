@@ -7,7 +7,7 @@ body {
   color: white;
 
   /* Default background fallback */
-  background-color: #222;
+  background-color: black;
 
   /* Ensure full-screen image display */
   background-size: cover;
