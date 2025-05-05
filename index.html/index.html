@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PLEBLE</title>
-  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
   <style>
     body {
@@ -12,12 +11,16 @@
       color: white;
       padding: 20px;
       background-color: black;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-attachment: fixed;
     }
 
     .container {
       max-width: 600px;
       margin: auto;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       padding: 20px;
       border-radius: 10px;
     }
@@ -25,11 +28,12 @@
     input[type="text"] {
       padding: 10px;
       width: 200px;
+      margin-bottom: 10px;
     }
 
     button {
-      padding: 10px;
-      margin-top: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
     }
 
     pre {
@@ -37,36 +41,26 @@
       padding: 10px;
       border-radius: 5px;
       min-height: 100px;
+      white-space: pre-wrap;
+    }
+
+    #instructions {
+      border: 2px solid white;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      font-family: monospace;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>PLEBLE Cadet Word Guessing Game</h1>
-    
-    <p><strong>Instructions:</strong></p>
-    <ul>
-      <li>Guess a 5-letter West Point–related word/code.</li>
-      <li>You have 6 tries to get it right.</li>
-      <li><code>[X]</code> = correct letter in the correct spot</li>
-      <li><code>(X)</code> = correct letter, wrong spot</li>
-      <li><code>X</code> = letter is not in the word</li>
-    </ul>
 
-    <label for="guess-input">Enter your guess:</label><br />
-    <input type="text" id="guess-input" maxlength="5" />
-    <button onclick="handleGuess()">Submit</button>
-
-    <div id="instructions" style="
-  border: 2px solid white;
-  padding: 15px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  margin-bottom: 20px;
-  white-space: pre-wrap;
-  font-family: monospace;
-">
+    <div id="instructions">
 Welcome to PLEBLE Cadet Word Guessing Game!
 
 Instructions:
@@ -77,9 +71,13 @@ Instructions:
 - X = Letter is not in the word
 
 Enter your first guess below.
-</div>
+    </div>
 
-<pre id="output"></pre>
+    <label for="guess-input">Enter your guess:</label><br />
+    <input type="text" id="guess-input" maxlength="5" />
+    <button onclick="handleGuess()">Submit</button>
+
+    <pre id="output"></pre>
 
     <hr />
     <label for="bg-upload">Change Background:</label>
@@ -103,7 +101,7 @@ game_over = False
 def evaluate(guess):
     global attempts, game_over
     if game_over:
-        return "The game is over. Please refresh to play again."
+        return "The game is over. Please refresh the page to play again."
 
     guess = guess.upper()
     if len(guess) != 5 or not guess.isalnum():
@@ -140,6 +138,7 @@ def evaluate(guess):
       const input = document.getElementById("guess-input");
       const output = document.getElementById("output");
       const guess = input.value.trim();
+
       if (!guess) return;
 
       try {
@@ -154,18 +153,12 @@ def evaluate(guess):
 
     window.addEventListener("load", setupGame);
 
-    // Background image upload
     document.getElementById("bg-upload").addEventListener("change", function (e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function (event) {
           document.body.style.backgroundImage = `url(${event.target.result})`;
-          document.body.style.backgroundSize = "cover";
-          document.body.style.backgroundRepeat = "no-repeat";
-          document.body.style.backgroundPosition = "center top";
-          document.body.style.backgroundPositionY = "30%";
-          document.body.style.backgroundAttachment = "fixed";
         };
         reader.readAsDataURL(file);
       }
@@ -173,3 +166,4 @@ def evaluate(guess):
   </script>
 </body>
 </html>
+
