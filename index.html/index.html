@@ -20,12 +20,12 @@
     .container {
       max-width: 600px;
       margin: auto;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       padding: 20px;
       border-radius: 10px;
     }
 
-    #instructions {
+    #instructions-box {
       border: 2px solid white;
       padding: 15px;
       border-radius: 10px;
@@ -39,12 +39,13 @@
     input[type="text"] {
       padding: 10px;
       width: 200px;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
 
     button {
       padding: 10px 20px;
       margin-left: 10px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
@@ -55,23 +56,28 @@
       min-height: 100px;
       white-space: pre-wrap;
     }
+
+    label {
+      display: block;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>PLEBLE Cadet Word Guessing Game</h1>
 
-    <div id="instructions">
-Welcome to PLEBLE Cadet Word Guessing Game!
+    <div id="instructions-box">
+Welcome to PLEBLE!
 
 Instructions:
 - Guess a 5-character West Point–related word or course code.
 - You have 6 tries to guess the word.
-- [X] = Correct letter in correct position
-- (X) = Correct letter in the wrong position
-- X = Letter is not in the word
+- [X] = Correct letter in the correct position.
+- (X) = Correct letter in the wrong position.
+- X = Letter is not in the word.
 
-Enter your first guess below.
+Good luck!
     </div>
 
     <label for="guess-input">Enter your guess:</label>
@@ -102,7 +108,7 @@ game_over = False
 def evaluate(guess):
     global attempts, game_over
     if game_over:
-        return "The game is over. Please refresh the page to play again."
+        return "The game is over. Please refresh to play again."
 
     guess = guess.upper()
     if len(guess) != 5 or not guess.isalnum():
@@ -167,4 +173,3 @@ def evaluate(guess):
   </script>
 </body>
 </html>
-
