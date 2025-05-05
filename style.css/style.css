@@ -1,15 +1,17 @@
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+
   font-family: Arial, sans-serif;
   color: white;
+
+  /* Default background fallback */
   background-color: #222;
 
-  /* Make the uploaded image fit the screen */
+  /* Ensure full-screen image display */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
 }
