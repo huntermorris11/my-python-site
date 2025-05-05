@@ -10,9 +10,12 @@
 <body>
   <div class="container">
     <h1>PLEBLE</h1>
-    
-    <textarea id="python-code" placeholder="Write your Python code here...">print("Hello from Python!")</textarea>
-    <button onclick="runPython()">Run Python</button>
+
+    <div class="game">
+      <label for="guess-input">Enter your guess:</label><br />
+      <input type="text" id="guess-input" maxlength="5" />
+      <button onclick="handleGuess()">Submit</button>
+    </div>
 
     <pre id="output"></pre>
 
@@ -24,36 +27,88 @@
 
   <script>
     let pyodideReadyPromise = loadPyodide();
+    let pyodide = null;
 
-    async function runPython() {
-      const code = document.getElementById("python-code").value;
-      const output = document.getElementById("output");
-      try {
-        let pyodide = await pyodideReadyPromise;
-        let result = await pyodide.runPythonAsync(code);
-        output.textContent = result;
-      } catch (err) {
-        output.textContent = "Error: " + err;
-      }
+    const gameCode = `
+import random
+
+Words = ['CY105', 'HI105', 'MA104', 'EN102', 'Hours', 'Davis', 'March', 'Honor','Board','Class','Hooah','MS100','EV203','Plebe','Cadet','Drill',"EN101","HI101","PE215","PE116","PL100","MA103","EN101","CI101","PH201",]
+
+answer = random.choice(Words).upper()
+MAX_TRIES = 6
+attempts = 0
+game_over = False
+
+def evaluate(guess):
+    global attempts, game_over
+    if game_over:
+        return "The game is over. Please refresh to play again."
+
+    guess = guess.upper()
+    if len(guess) != 5 or not guess.isalnum():
+        return "Please enter a valid 5-character word."
+
+    attempts += 1
+
+    if guess == answer:
+        game_over = True
+        return f"Hooah Ranger! The word was: {answer}"
+
+    correct = []
+    for i in range(5):
+        if guess[i] == answer[i]:
+            correct.append(f"[{guess[i]}]")
+        elif guess[i] in answer:
+            correct.append(f"({guess[i]})")
+        else:
+            correct.append(guess[i])
+
+    if attempts >= MAX_TRIES:
+        game_over = True
+        return "No go. The word was: " + answer
+
+    return ' '.join(correct)
+`;
+
+    async function setupGame() {
+      pyodide = await pyodideReadyPromise;
+      await pyodide.runPythonAsync(gameCode);
     }
 
-   document.getElementById("bg-upload").addEventListener("change", function (e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-	reader.onload = function (event) {
-	 document.body.style.backgroundImage = `url(${event.target.result})`;
-	 document.body.style.backgroundSize = "cover";
-	 document.body.style.backgroundRepeat = "no-repeat";
-     document.body.style.backgroundPosition = "center top"; // Initial anchor
-     document.body.style.backgroundPositionY = "30%"; // 👈 shift it down
-     document.body.style.backgroundAttachment = "fixed";
-};
+    async function handleGuess() {
+      const input = document.getElementById("guess-input");
+      const output = document.getElementById("output");
+      const guess = input.value.trim();
+      if (!guess) return;
 
-    };
-    reader.readAsDataURL(file);
-  }
-});
-</script>
+      try {
+        const result = await pyodide.runPythonAsync(`evaluate("${guess}")`);
+        output.textContent += `\n${result}`;
+      } catch (err) {
+        output.textContent += `\nError: ${err}`;
+      }
+
+      input.value = "";
+    }
+
+    window.addEventListener("load", setupGame);
+
+    // Handle background image upload
+    document.getElementById("bg-upload").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          document.body.style.backgroundImage = `url(${event.target.result})`;
+          document.body.style.backgroundSize = "cover";
+          document.body.style.backgroundRepeat = "no-repeat";
+          document.body.style.backgroundPosition = "center top";
+          document.body.style.backgroundPositionY = "30%";
+          document.body.style.backgroundAttachment = "fixed";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
 </body>
 </html>
