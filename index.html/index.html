@@ -20,9 +20,20 @@
     .container {
       max-width: 600px;
       margin: auto;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       padding: 20px;
       border-radius: 10px;
+    }
+
+    #instructions {
+      border: 2px solid white;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      margin-bottom: 20px;
+      font-family: monospace;
+      white-space: pre-wrap;
     }
 
     input[type="text"] {
@@ -33,6 +44,7 @@
 
     button {
       padding: 10px 20px;
+      margin-left: 10px;
       cursor: pointer;
     }
 
@@ -42,17 +54,6 @@
       border-radius: 5px;
       min-height: 100px;
       white-space: pre-wrap;
-    }
-
-    #instructions {
-      border: 2px solid white;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-      margin-bottom: 20px;
-      white-space: pre-wrap;
-      font-family: monospace;
     }
   </style>
 </head>
@@ -73,7 +74,7 @@ Instructions:
 Enter your first guess below.
     </div>
 
-    <label for="guess-input">Enter your guess:</label><br />
+    <label for="guess-input">Enter your guess:</label>
     <input type="text" id="guess-input" maxlength="5" />
     <button onclick="handleGuess()">Submit</button>
 
