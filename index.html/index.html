@@ -57,7 +57,29 @@
     <input type="text" id="guess-input" maxlength="5" />
     <button onclick="handleGuess()">Submit</button>
 
-    <pre id="output">Welcome to PLEBLE! Start guessing below.</pre>
+    <div id="instructions" style="
+  border: 2px solid white;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+  font-family: monospace;
+">
+Welcome to PLEBLE Cadet Word Guessing Game!
+
+Instructions:
+- Guess a 5-character West Point–related word or course code.
+- You have 6 tries to guess the word.
+- [X] = Correct letter in correct position
+- (X) = Correct letter in the wrong position
+- X = Letter is not in the word
+
+Enter your first guess below.
+</div>
+
+<pre id="output"></pre>
 
     <hr />
     <label for="bg-upload">Change Background:</label>
