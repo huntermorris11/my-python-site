@@ -41,12 +41,15 @@
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = function (event) {
-      document.body.style.backgroundImage = `url(${event.target.result})`;
-      document.body.style.backgroundSize = "cover";
-      document.body.style.backgroundRepeat = "no-repeat";
-	  document.body.style.backgroundPosition = "center 50%"; // More shift
-      document.body.style.backgroundAttachment = "fixed";
+	reader.onload = function (event) {
+	 document.body.style.backgroundImage = `url(${event.target.result})`;
+	 document.body.style.backgroundSize = "cover";
+	 document.body.style.backgroundRepeat = "no-repeat";
+     document.body.style.backgroundPosition = "center top"; // Initial anchor
+     document.body.style.backgroundPositionY = "30%"; // 👈 shift it down
+     document.body.style.backgroundAttachment = "fixed";
+};
+
     };
     reader.readAsDataURL(file);
   }
